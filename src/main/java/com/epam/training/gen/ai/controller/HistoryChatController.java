@@ -4,6 +4,7 @@ import com.epam.training.gen.ai.service.HistoryPromptService;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.semanticfunctions.KernelFunction;
 import com.microsoft.semantickernel.semanticfunctions.KernelFunctionArguments;
+import com.microsoft.semantickernel.services.chatcompletion.AuthorRole;
 import com.microsoft.semantickernel.services.chatcompletion.ChatHistory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,8 @@ public class HistoryChatController {
         if(chatHistory != null) {
             log.info("Chat id {} with history found." , chatId);
             chatHistory.addUserMessage(input);
+
+            chatHistory.addMessage(AuthorRole.SYSTEM, "Generate response with professional tone and simple to understand. Use line breaks and bullets where ever needed.");
             return chatHistory;
         }else {
             log.info("Creating new chat history with chat Id {}." , chatId);
