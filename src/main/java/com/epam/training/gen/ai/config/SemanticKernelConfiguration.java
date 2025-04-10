@@ -1,10 +1,7 @@
 package com.epam.training.gen.ai.config;
-
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.KeyCredential;
-import com.epam.training.gen.ai.plugins.BookStorePlugin;
-import com.epam.training.gen.ai.plugins.OrderWardrobePlugin;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.aiservices.openai.chatcompletion.OpenAIChatCompletion;
 import com.microsoft.semantickernel.orchestration.InvocationContext;
@@ -73,22 +70,6 @@ public class SemanticKernelConfiguration {
                 .withAIService(ChatCompletionService.class, chatCompletionService)
                 .build();
     }
-
-    @Bean
-    public Kernel inventoryKernel(ChatCompletionService chatCompletionService) {
-        KernelPlugin pluginWardrobe = KernelPluginFactory.createFromObject(
-                new OrderWardrobePlugin(), "OrderWardrobePlugin");
-
-        KernelPlugin pluginBookstore = KernelPluginFactory.createFromObject(
-                new BookStorePlugin(), "BookStorePlugin");
-
-        return Kernel.builder()
-                .withAIService(ChatCompletionService.class, chatCompletionService)
-                .withPlugin(pluginWardrobe)
-                .withPlugin(pluginBookstore)
-                .build();
-    }
-
 
     /**
      * Creates an InvocationContext bean.
