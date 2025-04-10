@@ -3,8 +3,6 @@ package com.epam.training.gen.ai.config;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.KeyCredential;
-import com.epam.training.gen.ai.plugins.BookStorePlugin;
-import com.epam.training.gen.ai.plugins.OrderWardrobePlugin;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.aiservices.openai.chatcompletion.OpenAIChatCompletion;
 import com.microsoft.semantickernel.orchestration.InvocationContext;

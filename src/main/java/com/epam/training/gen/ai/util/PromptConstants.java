@@ -1,8 +1,5 @@
 package com.epam.training.gen.ai.util;
 
-import com.epam.training.gen.ai.modal.Book;
-import com.epam.training.gen.ai.modal.Cloth;
-
 import java.util.List;
 import java.util.Map;
 
