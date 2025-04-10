@@ -1,7 +1,10 @@
 package com.epam.training.gen.ai.config;
+
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.KeyCredential;
+import com.epam.training.gen.ai.plugins.BookStorePlugin;
+import com.epam.training.gen.ai.plugins.OrderWardrobePlugin;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.aiservices.openai.chatcompletion.OpenAIChatCompletion;
 import com.microsoft.semantickernel.orchestration.InvocationContext;
@@ -106,6 +109,25 @@ public class SemanticKernelConfiguration {
                 .withReturnMode(InvocationReturnMode.LAST_MESSAGE_ONLY)
                 .withToolCallBehavior(ToolCallBehavior.allowAllKernelFunctions(true))
                 .withPromptExecutionSettings(buildPromptSettings(100, 0.2))
+                .build();
+    }
+
+    /*
+     * Find the books and cloths responses
+     *
+     * */
+    @Bean
+    public Kernel inventoryKernel(ChatCompletionService chatCompletionService) {
+        KernelPlugin pluginWardrobe = KernelPluginFactory.createFromObject(
+                new OrderWardrobePlugin(), "OrderWardrobePlugin");
+
+        KernelPlugin pluginBookstore = KernelPluginFactory.createFromObject(
+                new BookStorePlugin(), "BookStorePlugin");
+
+        return Kernel.builder()
+                .withAIService(ChatCompletionService.class, chatCompletionService)
+                .withPlugin(pluginWardrobe)
+                .withPlugin(pluginBookstore)
                 .build();
     }
 }

@@ -1,3 +1,4 @@
+
 package com.epam.training.gen.ai.util;
 
 import com.epam.training.gen.ai.modal.Book;
@@ -48,3 +49,4 @@ public class PromptConstants {
         );
     }
 }
+
