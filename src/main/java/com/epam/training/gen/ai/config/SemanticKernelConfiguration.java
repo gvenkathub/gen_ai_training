@@ -3,10 +3,16 @@ package com.epam.training.gen.ai.config;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.KeyCredential;
+import com.epam.training.gen.ai.modal.Book;
+import com.epam.training.gen.ai.modal.Cart;
+import com.epam.training.gen.ai.modal.Cloth;
 import com.epam.training.gen.ai.plugins.BookStorePlugin;
 import com.epam.training.gen.ai.plugins.OrderWardrobePlugin;
+import com.google.gson.Gson;
 import com.microsoft.semantickernel.Kernel;
 import com.microsoft.semantickernel.aiservices.openai.chatcompletion.OpenAIChatCompletion;
+import com.microsoft.semantickernel.contextvariables.ContextVariableTypeConverter;
+import com.microsoft.semantickernel.contextvariables.ContextVariableTypes;
 import com.microsoft.semantickernel.orchestration.InvocationContext;
 import com.microsoft.semantickernel.orchestration.InvocationReturnMode;
 import com.microsoft.semantickernel.orchestration.ToolCallBehavior;
@@ -55,6 +61,9 @@ public class SemanticKernelConfiguration {
      */
     @Bean
     public ChatCompletionService chatCompletionService(OpenAIAsyncClient openAIAsyncClient){
+        addContextVariableTypeConverter(Cloth.class);
+        addContextVariableTypeConverter(Book.class);
+        addContextVariableTypeConverter(Cart.class);
         return OpenAIChatCompletion.builder()
                 .withModelId(modelName)
                 .withOpenAIAsyncClient(openAIAsyncClient)
@@ -129,5 +138,20 @@ public class SemanticKernelConfiguration {
                 .withPlugin(pluginWardrobe)
                 .withPlugin(pluginBookstore)
                 .build();
+    }
+
+    /**
+     * Registers a global converter for a given type to enable object serialization in Semantic Kernel prompts.
+     *
+     * @param type the class type to register a converter for.
+     * @param <T>  the type parameter.
+     */
+    private <T> void addContextVariableTypeConverter(Class<T> type) {
+        ContextVariableTypes.addGlobalConverter(
+                ContextVariableTypeConverter
+                        .builder(type)
+                        .toPromptString(new Gson()::toJson)
+                        .build()
+        );
     }
 }

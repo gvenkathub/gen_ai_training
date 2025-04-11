@@ -5,6 +5,7 @@ public record Book(
         String title,
         String author,
         String publisher,
-        String price
+        String price,
+        Integer quantity
 ) {
 }

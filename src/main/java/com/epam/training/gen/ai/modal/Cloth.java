@@ -6,6 +6,7 @@ public record Cloth(
         String size,
         String material,
         String brand,
-        String price
+        String price,
+        Integer quantity
 ) {
 }
