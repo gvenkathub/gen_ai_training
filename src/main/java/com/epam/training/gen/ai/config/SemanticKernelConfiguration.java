@@ -6,6 +6,7 @@ import com.azure.core.credential.KeyCredential;
 import com.epam.training.gen.ai.modal.Book;
 import com.epam.training.gen.ai.modal.Cart;
 import com.epam.training.gen.ai.modal.Cloth;
+import com.epam.training.gen.ai.modal.Hotel;
 import com.epam.training.gen.ai.plugins.BookStorePlugin;
 import com.epam.training.gen.ai.plugins.OrderWardrobePlugin;
 import com.google.gson.Gson;
@@ -64,6 +65,7 @@ public class SemanticKernelConfiguration {
         addContextVariableTypeConverter(Cloth.class);
         addContextVariableTypeConverter(Book.class);
         addContextVariableTypeConverter(Cart.class);
+        addContextVariableTypeConverter(Hotel.class);
         return OpenAIChatCompletion.builder()
                 .withModelId(modelName)
                 .withOpenAIAsyncClient(openAIAsyncClient)
