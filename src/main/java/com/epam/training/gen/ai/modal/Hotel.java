@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @Getter
 public class Hotel {
+
     @VectorStoreRecordKey
     private String hotelId;
 
@@ -23,29 +24,38 @@ public class Hotel {
     @VectorStoreRecordData(isFullTextSearchable = true)
     private String description;
 
-    @VectorStoreRecordVector(dimensions = 4, indexKind = IndexKind.HNSW, distanceFunction = DistanceFunction.COSINE_DISTANCE)
-    private List<Float> descriptionEmbedding;
-
     @VectorStoreRecordData(isFilterable = true)
     private List<String> tags;
 
+    @VectorStoreRecordData(isFullTextSearchable = true)
+    private List<String> activitiesAndLandmarks;
+
+    @VectorStoreRecordVector(dimensions = 4, indexKind = IndexKind.HNSW, distanceFunction = DistanceFunction.COSINE_DISTANCE)
+    private List<Float> hotelEmbedding;
+
     public Hotel() { }
 
-    public Hotel(String hotelId, String name, String description, List<Float> descriptionEmbedding, List<String> tags) {
+    public Hotel(String hotelId, String name, String description, List<String> tags, List<String> activitiesAndLandmarks,
+                 List<Float> descriptionEmbedding) {
         this.hotelId = hotelId;
         this.name = name;
         this.description = description;
-        this.descriptionEmbedding = Collections.unmodifiableList(descriptionEmbedding);
         this.tags = Collections.unmodifiableList(tags);
+        this.activitiesAndLandmarks = Collections.unmodifiableList(activitiesAndLandmarks);
+        this.hotelEmbedding = Collections.unmodifiableList(descriptionEmbedding);
     }
 
-    public String getHotelId() { return hotelId; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public List<Float> getDescriptionEmbedding() { return descriptionEmbedding; }
-    public List<String> getTags() { return tags; }
+    public void setHotelEmbedding(List<Float> hotelEmbedding) {
+        this.hotelEmbedding = Collections.unmodifiableList(hotelEmbedding );
+    }
 
-    public void setDescriptionEmbedding(List<Float> descriptionEmbedding) {
-        this.descriptionEmbedding = Collections.unmodifiableList(descriptionEmbedding);
+    public void setActivitiesAndLandmarks(List<String> activitiesAndLandmarks) {
+        this.activitiesAndLandmarks = Collections.unmodifiableList(activitiesAndLandmarks);
+    }
+
+    public String getHotelEmbeddingContent() {
+        return String.join(", ", hotelEmbedding.stream()
+                .map(String::valueOf)
+                .toList());
     }
 }
