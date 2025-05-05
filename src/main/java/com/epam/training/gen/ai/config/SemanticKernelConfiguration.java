@@ -23,6 +23,8 @@ import com.microsoft.semantickernel.services.chatcompletion.ChatCompletionServic
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.epam.training.gen.ai.plugins.VacationPlannerPlugin;
+import org.springframework.context.annotation.DependsOn;
 
 import static com.epam.training.gen.ai.util.PromptUtil.buildPromptSettings;
 
@@ -107,7 +109,7 @@ public class SemanticKernelConfiguration {
         return new InvocationContext.Builder()
                 .withReturnMode(InvocationReturnMode.LAST_MESSAGE_ONLY)
                 .withToolCallBehavior(ToolCallBehavior.allowAllKernelFunctions(true))
-                .withPromptExecutionSettings(buildPromptSettings(100, 0.9))
+                .withPromptExecutionSettings(buildPromptSettings(300, 0.9))
                 .build();
     }
 
@@ -119,7 +121,7 @@ public class SemanticKernelConfiguration {
         return new InvocationContext.Builder()
                 .withReturnMode(InvocationReturnMode.LAST_MESSAGE_ONLY)
                 .withToolCallBehavior(ToolCallBehavior.allowAllKernelFunctions(true))
-                .withPromptExecutionSettings(buildPromptSettings(100, 0.2))
+                .withPromptExecutionSettings(buildPromptSettings(200, 0.2))
                 .build();
     }
 
@@ -155,5 +157,17 @@ public class SemanticKernelConfiguration {
                         .toPromptString(new Gson()::toJson)
                         .build()
         );
+    }
+
+    @Bean
+    @DependsOn("vacationPlannerPlugin")
+    public Kernel vacationKernel(ChatCompletionService chatCompletionService, VacationPlannerPlugin vacationPlannerPlugin) {
+        KernelPlugin pluginVacation = KernelPluginFactory.createFromObject(
+                vacationPlannerPlugin, "VacationPlannerPlugin");
+
+        return Kernel.builder()
+                .withAIService(ChatCompletionService.class, chatCompletionService)
+                .withPlugin(pluginVacation)
+                .build();
     }
 }
