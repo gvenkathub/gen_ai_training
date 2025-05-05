@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://git.epam.com/narasimharaju_datla/genai_java_bootcamp.git
+git remote add origin https://github.com/gvenkathub/gen_ai_training.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://git.epam.com/narasimharaju_datla/genai_java_bootcamp/-/settings/integrations)
+- [ ] [Set up project integrations](https://github.com/gvenkathub/gen_ai_training/-/settings/integrations)
 
 ## Collaborate with your team
 
